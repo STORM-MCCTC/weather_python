@@ -1,34 +1,35 @@
 import requests as req
 from bs4 import BeautifulSoup
 
-# url = "https://www.wunderground.com/weather/us/ny/new_york"
+while True:
+    City = input("City: ")
+    State = input("State: ")
 
-# response = req.get(url)
+    url = f"https://www.wunderground.com/weather/us/{State}/{City}"
 
-# if response.status_code == 200:
-#     soup = BeautifulSoup(response.text, "html.parser")
-#     current_temp= soup.find("span", class_="wu-value wu-value-to").text
-#     print("Current Temp in New York, NY", current_temp + "°F")
-# else:
-#     print("Weather data fetch failed. status code:", response.status_code)
+    response = req.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, "html.parser")
+        
+        current_temp = soup.find("span", class_="wu-value wu-value-to").text
+        high_temp = soup.find("span", class_="hi").text
+        low_temp = soup.find("span", class_="lo").text
+        weather_canditions = soup.find("div", class_="condition-icon small-6 medium-12 columns").text
+        print("")
+        print(f"Current Temperature in {City.title()}, {State.title()}: {current_temp}°F")
+        print(f"High Temp {high_temp}F")
+        print(f"Low Temp {low_temp}F")
+        print(f"weather Conditions: {weather_canditions}")
+        print("")
+    else:
+        print("Weather data fetch failed. status code:", response.status_code)
 
-City = input("City: ")
-State = input("State: ")
+    loop = input("another city? y/n: ")
 
-url = f"https://www.wunderground.com/weather/us/{State}/{City}"
-
-response = req.get(url)
-if response.status_code == 200:
-    soup = BeautifulSoup(response.text, "html.parser")
-    
-    current_temp = soup.find("span", class_="wu-value wu-value-to").text
-    high_temp = soup.find("span", class_="hi").text
-    low_temp = soup.find("span", class_="lo").text
-    weather_canditions = soup.find("div", class_="condition-icon small-6 medium-12 columns").text
-
-    print(f"Current Temperature in {City.title()}, {State.title()}: {current_temp}°F")
-    print(f"High Temp {high_temp}F")
-    print(f"Low Temp {low_temp}F")
-    print(f"weather Conditions: {weather_canditions}")
-else:
-    print("Weather data fetch failed. status code:", response.status_code)
+    if loop == "y":
+        print("")
+        pass
+    elif loop == "n":
+        break
+    else:
+        break
